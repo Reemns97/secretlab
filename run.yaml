@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: git-clone-checking-out-a-branch
+spec:
+  serviceAccountName: build-bot
+  pipelineRef:
+    name: cat-branch-readme
+  workspaces:
+  - name: shared-data
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Mi
+  params:
+  - name: repo-url
+    value: git@github.com:KnowledgeHut-AWS/tekton.git
+  - name: branch-name
+    value: master
